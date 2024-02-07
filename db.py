@@ -31,11 +31,11 @@ def new_user(firstname: str, lastname: str, shomare_kart: int, password: int):
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
     cursor.execute("""INSERT INTO main (firstname,lastname,shomare_kart,password)
-                   VALUES ('elahe', 'amini', 6037997603277645, 1234);""")
+                   VALUES (?, ?, ?, ?);""",(firstname, lastname, shomare_kart, password))
     conn.commit()
     cursor.close()
     conn.close()
 
-new_user(firstname="elahe",lastname="amini",shomare_kart=6037997503297156,password=1234)
-#create_table()
+#new_user(firstname="elahe",lastname="amini",shomare_kart=6037997503297156,password=1234)
+create_table()
     
