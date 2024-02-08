@@ -59,5 +59,16 @@ def transaction(sender_card: int, receiver_card: int, amount: int):
         conn.close()
         raise Exception("NOT ENOUGH ETEBAR!")
 
+def to_charge(simcard, mablagh, shomare_kart, password):
+    conn = sqlite3.connect("up.db")
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT column_mobile WHERE EXISTS {simcard}")
+    checking = cursor.fetchone()
+    if len(checking)==0:
+        pass
+    if len(checking)!=0:
+        
+
+
 
     
