@@ -7,7 +7,7 @@ def create_table():
                    firstname VARCHAR(31) NOT NULL,
                    lastname VARCHAR(31) NOT NULL,
                    shomare_kart INT NOT NULL UNIQUE,
-                   password INT NOT NULL,
+                   password VARCHAR(4) NOT NULL,
                    mobile VARCHAR(11) NOT NULL,
                    etebar INT NOT NULL DEFAULT 100,
                    charge INT NOT NULL DEFAULT 0
@@ -16,7 +16,7 @@ def create_table():
     cursor.close()
     conn.close()
 
-def new_user(firstname: str, lastname: str, shomare_kart: int, password: int, mobile: str):
+def new_user(firstname: str, lastname: str, shomare_kart: int, password: str, mobile: str):
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
     cursor.execute("""INSERT INTO main (firstname, lastname, shomare_kart, password, mobile)
