@@ -1,6 +1,5 @@
 import sqlite3
 
-
 def create_table():
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
@@ -26,5 +25,42 @@ def new_user(firstname: str, lastname: str, shomare_kart: int, password: int, mo
     cursor.close()
     conn.close()
 
-# new_user(firstname="elahe",lastname="amini",shomare_kart=6037997503297156,password=1234, mobile="09120000000")
-# create_table()
+def get_user_by_name(firstname: str, lastname: str):
+    conn = sqlite3.connect("up.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM main WHERE firstname = ? AND lastname = ?;",
+                   (firstname, lastname))
+    result = cursor.fetchone()
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return result
+
+def transaction(sender_card: int, receiver_card: int, amount: int):
+    # check if amount is allowed
+    conn = sqlite3.connect("up.db")
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT etebar FROM main WHERE shomare_kart = {sender_card};")
+    sender_etebar = cursor.fetchone()[0]
+    if amount <= sender_etebar:
+        new_sender_etebar = sender_etebar - amount
+        cursor.execute(f"SELECT etebar FROM main WHERE shomare_kart = {receiver_card};")
+        receiver_etebar = cursor.fetchone()[0]
+        new_receiver_etebar = receiver_etebar + amount
+        cursor.execute(f"UPDATE main SET etebar = {new_receiver_etebar} WHERE shomare_kart = {receiver_card};")
+        cursor.execute(f"UPDATE main SET etebar = {new_sender_etebar} WHERE shomare_kart = {sender_card};")
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+    else:
+        conn.commit()
+        cursor.close()
+        conn.close()
+        raise Exception("NOT ENOUGH ETEBAR!")
+    
+
+# transaction(sender_card=6037997503297156, receiver_card=7965457809872345, amount=50)
+print(get_user_by_name(firstname="elahe", lastname="amini"))
+
+    
