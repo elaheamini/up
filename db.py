@@ -58,9 +58,6 @@ def transaction(sender_card: int, receiver_card: int, amount: int):
         cursor.close()
         conn.close()
         raise Exception("NOT ENOUGH ETEBAR!")
-    
 
-# transaction(sender_card=6037997503297156, receiver_card=7965457809872345, amount=50)
-print(get_user_by_name(firstname="elahe", lastname="amini"))
 
     
