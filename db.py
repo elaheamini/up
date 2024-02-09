@@ -63,6 +63,13 @@ def transaction(sender_card: int, receiver_card: int, amount: int, password: str
 def to_charge(simcard: str, mablagh: int): #without checking password
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
+    cursor.execute(f"SELECT charge FROM main WHERE mobile = '{simcard}';")
+    # error cursor.fetchone() returns None
+    db_result = cursor.fetchone()
+    if db_result is not None:
+        charge_feli=db_result[0]
+    else:
+        raise Exception("simcard peyda nashod!")
     shomare_kart, password=input().split()
     shomare_kart=int(shomare_kart)
     check_password(shomare_kart, password)
