@@ -36,7 +36,7 @@ def get_user_by_name(firstname: str, lastname: str):
     conn.close()
     return result
 
-def transaction(sender_card: int, receiver_card: int, amount: int):
+def transaction(sender_card: int, receiver_card: int, amount: int): #without using password
     # check if amount is allowed
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
@@ -59,16 +59,36 @@ def transaction(sender_card: int, receiver_card: int, amount: int):
         conn.close()
         raise Exception("NOT ENOUGH ETEBAR!")
 
-def to_charge(simcard, mablagh, shomare_kart, password):
+def to_charge(simcard: str, mablagh: int): #without using password
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
-    cursor.execute(f"SELECT column_mobile WHERE EXISTS {simcard}")
+    cursor.execute(f"SELECT column_mobile FROM table_main WHERE EXISTS {simcard};")
     checking = cursor.fetchone()
     if len(checking)==0:
-        pass
-    if len(checking)!=0:
-        
+        print("you have not registered your information.")
+        #agar shod ye tabeei tarif konam ke bade sabt dobare bargarde hamina va edeme bede.
 
+    if len(checking)!=0:
+        cursor.execute(f"SELECT etebar FROM main WHERE mobile = {simcard};")
+        etebar_feli=cursor.fetchone()[0]
+        if etebar_feli>=mablagh:
+            new_etebar=etebar_feli-mablagh
+            cursor.execute(f"SELECT charge FROM main WHERE mobile = {simcard};")
+            charge_feli=cursor.fetchone()[0]
+            new_charge=charge_feli+mablagh
+            cursor.execute(f"UPDATE main SET etebar = {new_etebar} WHERE mobile = {simcard};")
+            cursor.execute(f"UPDATE main SET charge = {new_charge} WHERE mobile = {simcard};")
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+        else:
+            conn.commit()
+            cursor.close()
+            conn.close()
+            raise Exception("NOT ENOUGH ETEBAR!")
+
+#to_charge('09123456789', 50)
 
 
     
