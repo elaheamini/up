@@ -60,7 +60,7 @@ def transaction(sender_card: int, receiver_card: int, amount: int, password: str
         conn.close()
         raise Exception("NOT ENOUGH ETEBAR!") #???????????????
    
-def to_charge(simcard: str, mablagh: int): #without checking password
+def to_charge(simcard: str, mablagh: int):
     conn = sqlite3.connect("up.db")
     cursor = conn.cursor()
     cursor.execute(f"SELECT charge FROM main WHERE mobile = '{simcard}';")
@@ -119,3 +119,11 @@ def check_password(shomare_kart: int, password: str):
         conn.commit()
         cursor.close()
         conn.close()
+
+def print_balance(shomare_kart, password):
+    conn = sqlite3.connect("up.db")
+    cursor = conn.cursor()
+    check_password(shomare_kart, password)
+    cursor.execute(f"SELECT etebar FROM main WHERE shomare_kart = {shomare_kart};")
+    balance = cursor.fetchone()[0]
+    print(balance)
