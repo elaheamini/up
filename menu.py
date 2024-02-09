@@ -16,3 +16,10 @@ while True:
           simcard, mablagh=input().split()
           mablagh=int(mablagh)
           db.to_charge(simcard, mablagh)
+
+    elif keyboard=="4":
+          shomare_kart, password=input().split()
+          shomare_kart=int(shomare_kart)
+          db.print_balance(shomare_kart, password)
+          
+
